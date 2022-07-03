@@ -4,10 +4,13 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class Splitter extends JFrame {
     private JButton btnAdd, btnDelete, btnEdit;
     private JList<String> taskList;
+    private int selectedIndex;
 
     public Splitter() {
         // Create panel for buttons on top
@@ -16,8 +19,11 @@ public class Splitter extends JFrame {
         // Add buttons to panel
         btnAdd = new JButton("Add");
         pnlButtons.add(btnAdd);
+
         btnDelete = new JButton("Delete");
+        btnDelete.addActionListener(new BtnDeleteListener());
         pnlButtons.add(btnDelete);
+        
         btnEdit = new JButton("Edit");
         pnlButtons.add(btnEdit);
 
@@ -25,6 +31,7 @@ public class Splitter extends JFrame {
         JPanel pnlList = new JPanel(new GridLayout());
         String[] data = {"one", "two", "three", "four"};
         taskList = new JList<>(data);
+        taskList.addListSelectionListener(new TaskListListener());
         pnlList.add(taskList);
 
         // add panels to content pane
@@ -46,5 +53,25 @@ public class Splitter extends JFrame {
                 new Splitter();
             }
         });
+    }
+
+    private class TaskListListener implements ListSelectionListener {
+        // Handler for when a list item is clicked/selected
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            // Called back twice when a list element is selected
+            selectedIndex = taskList.getSelectedIndex();
+            System.out.println(selectedIndex); //DEBUG
+        }
+    }
+
+    private class BtnDeleteListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Delete " + selectedIndex + "!"); // DEBUG
+            
+        }
+        
     }
 }
