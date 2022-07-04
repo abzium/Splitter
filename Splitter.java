@@ -11,6 +11,7 @@ public class Splitter extends JFrame {
     private JButton btnAdd, btnDelete, btnEdit;
     private JList<String> taskList;
     private int selectedIndex;
+    private DefaultListModel<String> taskListModel;
 
     public Splitter() {
         // Create panel for buttons on top
@@ -28,10 +29,14 @@ public class Splitter extends JFrame {
         pnlButtons.add(btnEdit);
 
         // Create panel for list and add list to panel
-        JPanel pnlList = new JPanel(new GridLayout());
-        String[] data = {"one", "two", "three", "four"};
-        taskList = new JList<>(data);
+        taskListModel = new DefaultListModel<>();
+        taskListModel.addElement("task 1");
+        taskListModel.addElement("task 2");
+
+        taskList = new JList<>(taskListModel);
         taskList.addListSelectionListener(new TaskListListener());
+
+        JPanel pnlList = new JPanel(new GridLayout());
         pnlList.add(taskList);
 
         // add panels to content pane
@@ -69,6 +74,7 @@ public class Splitter extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            taskListModel.remove(selectedIndex);
             System.out.println("Delete " + selectedIndex + "!"); // DEBUG
             
         }
