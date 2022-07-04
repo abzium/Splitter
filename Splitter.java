@@ -76,8 +76,11 @@ public class Splitter extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!taskListModel.isEmpty()) {
-                taskListModel.remove(selectedIndex);
+                if (selectedIndex != -1) {
+                    taskListModel.remove(selectedIndex);
+                }
             }
+            
             System.out.println("Delete " + selectedIndex + "!"); // DEBUG
             
         }
