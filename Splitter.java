@@ -34,6 +34,7 @@ public class Splitter extends JFrame {
         taskListModel.addElement("task 2");
 
         taskList = new JList<>(taskListModel);
+        selectedIndex = -1;
         taskList.addListSelectionListener(new TaskListListener());
 
         JPanel pnlList = new JPanel(new GridLayout());
@@ -74,7 +75,9 @@ public class Splitter extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            taskListModel.remove(selectedIndex);
+            if (!taskListModel.isEmpty()) {
+                taskListModel.remove(selectedIndex);
+            }
             System.out.println("Delete " + selectedIndex + "!"); // DEBUG
             
         }
