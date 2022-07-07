@@ -12,13 +12,15 @@ public class Splitter extends JFrame {
     private JList<String> taskList;
     private int selectedIndex;
     private DefaultListModel<String> taskListModel;
+    private JPanel pnlButtons, pnlList;
 
     public Splitter() {
         // Create panel for buttons on top
-        JPanel pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
+        pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
 
         // Add buttons to panel
         btnAdd = new JButton("Add");
+        btnAdd.addActionListener(new BtnAddListener());
         pnlButtons.add(btnAdd);
 
         btnDelete = new JButton("Delete");
@@ -37,7 +39,7 @@ public class Splitter extends JFrame {
         selectedIndex = -1;
         taskList.addListSelectionListener(new TaskListListener());
 
-        JPanel pnlList = new JPanel(new GridLayout());
+        pnlList = new JPanel(new GridLayout());
         pnlList.add(taskList);
 
         // add panels to content pane
@@ -69,6 +71,16 @@ public class Splitter extends JFrame {
             selectedIndex = taskList.getSelectedIndex();
             System.out.println(selectedIndex); //DEBUG
         }
+    }
+
+    private class BtnAddListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JOptionPane.showMessageDialog(pnlButtons, "ADD");
+            
+        }
+
     }
 
     private class BtnDeleteListener implements ActionListener {
