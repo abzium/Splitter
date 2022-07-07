@@ -32,8 +32,6 @@ public class Splitter extends JFrame {
 
         // Create panel for list and add list to panel
         taskListModel = new DefaultListModel<>();
-        taskListModel.addElement("task 1");
-        taskListModel.addElement("task 2");
 
         taskList = new JList<>(taskListModel);
         selectedIndex = -1;
@@ -69,7 +67,6 @@ public class Splitter extends JFrame {
         public void valueChanged(ListSelectionEvent e) {
             // Called back twice when a list element is selected
             selectedIndex = taskList.getSelectedIndex();
-            System.out.println(selectedIndex); //DEBUG
         }
     }
 
@@ -77,7 +74,7 @@ public class Splitter extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "ADD");
+            String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "Enter the name of the task:", "Add task", JOptionPane.PLAIN_MESSAGE);
             taskListModel.addElement(taskName);
         }
 
@@ -92,10 +89,6 @@ public class Splitter extends JFrame {
                     taskListModel.remove(selectedIndex);
                 }
             }
-            
-            System.out.println("Delete " + selectedIndex + "!"); // DEBUG
-            
         }
-        
     }
 }
