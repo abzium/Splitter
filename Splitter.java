@@ -12,13 +12,15 @@ public class Splitter extends JFrame {
     private JList<String> taskList;
     private int selectedIndex;
     private DefaultListModel<String> taskListModel;
+    private JPanel pnlButtons, pnlList;
 
     public Splitter() {
         // Create panel for buttons on top
-        JPanel pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
+        pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
 
         // Add buttons to panel
         btnAdd = new JButton("Add");
+        btnAdd.addActionListener(new BtnAddListener());
         pnlButtons.add(btnAdd);
 
         btnDelete = new JButton("Delete");
@@ -30,14 +32,12 @@ public class Splitter extends JFrame {
 
         // Create panel for list and add list to panel
         taskListModel = new DefaultListModel<>();
-        taskListModel.addElement("task 1");
-        taskListModel.addElement("task 2");
 
         taskList = new JList<>(taskListModel);
         selectedIndex = -1;
         taskList.addListSelectionListener(new TaskListListener());
 
-        JPanel pnlList = new JPanel(new GridLayout());
+        pnlList = new JPanel(new GridLayout());
         pnlList.add(taskList);
 
         // add panels to content pane
@@ -67,8 +67,17 @@ public class Splitter extends JFrame {
         public void valueChanged(ListSelectionEvent e) {
             // Called back twice when a list element is selected
             selectedIndex = taskList.getSelectedIndex();
-            System.out.println(selectedIndex); //DEBUG
         }
+    }
+
+    private class BtnAddListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "Enter the name of the task:", "Add task", JOptionPane.PLAIN_MESSAGE);
+            taskListModel.addElement(taskName);
+        }
+
     }
 
     private class BtnDeleteListener implements ActionListener {
@@ -80,10 +89,6 @@ public class Splitter extends JFrame {
                     taskListModel.remove(selectedIndex);
                 }
             }
-            
-            System.out.println("Delete " + selectedIndex + "!"); // DEBUG
-            
         }
-        
     }
 }
