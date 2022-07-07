@@ -77,8 +77,8 @@ public class Splitter extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            JOptionPane.showMessageDialog(pnlButtons, "ADD");
-            
+            String s = (String)JOptionPane.showInputDialog(pnlButtons, "ADD");
+            System.out.println("you entered: " + s);
         }
 
     }
