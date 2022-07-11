@@ -1,2 +1,2 @@
 # Splitter
- A to-do list that organizes smaller subtasks
+ A to-do list made in Java using Swing.
