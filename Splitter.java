@@ -86,7 +86,7 @@ public class Splitter extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!taskListModel.isEmpty()) {
-                if (selectedIndex != -1) {
+                if (selectedIndex != -1) { 
                     taskListModel.remove(selectedIndex);
                 }
             }
@@ -97,8 +97,10 @@ public class Splitter extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "Enter the new name of the task:", "Edit task", JOptionPane.PLAIN_MESSAGE);
             
+            if (!taskListModel.isEmpty() && selectedIndex != -1) {
+                String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "Enter the new name of the task:", "Edit task", JOptionPane.PLAIN_MESSAGE);
+            }
         }
 
     }
