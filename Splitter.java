@@ -28,6 +28,7 @@ public class Splitter extends JFrame {
         pnlButtons.add(btnDelete);
         
         btnEdit = new JButton("Edit");
+        btnEdit.addActionListener(new BtnEditListener());
         pnlButtons.add(btnEdit);
 
         // Create panel for list and add list to panel
