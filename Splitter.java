@@ -100,6 +100,7 @@ public class Splitter extends JFrame {
             
             if (!taskListModel.isEmpty() && selectedIndex != -1) {
                 String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "Enter the new name of the task:", "Edit task", JOptionPane.PLAIN_MESSAGE);
+                taskListModel.setElementAt(taskName, selectedIndex);
             }
         }
 
