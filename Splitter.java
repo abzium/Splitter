@@ -91,4 +91,14 @@ public class Splitter extends JFrame {
             }
         }
     }
+
+    private class BtnEditListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "Enter the new name of the task:", "Edit task", JOptionPane.PLAIN_MESSAGE);
+            
+        }
+
+    }
 }
