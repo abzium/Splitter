@@ -28,6 +28,10 @@ public class Splitter extends JFrame {
         JMenuItem saveItem = new JMenuItem("Save");
         JMenuItem loadItem = new JMenuItem("Load");
 
+        // Add action listeners
+        saveItem.addActionListener(new SaveItemListener());
+        loadItem.addActionListener(new LoadItemListener());
+
         // Add menuItems to menu
         fileMenu.add(saveItem);
         fileMenu.add(loadItem);
@@ -129,4 +133,23 @@ public class Splitter extends JFrame {
 
     }
 
+    private class SaveItemListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Saving...");
+            
+        }
+        
+    }
+
+    private class LoadItemListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Loading...");
+            
+        }
+        
+    }
 }
