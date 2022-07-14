@@ -21,8 +21,18 @@ public class Splitter extends JFrame {
         // Create menu bar 
         JMenuBar menuBar = new JMenuBar();
 
-        // Create file menu and add it to the bar
+        // Create file menu
         JMenu fileMenu = new JMenu("File");
+
+        // Create 'save' and 'load' menu items
+        JMenuItem saveItem = new JMenuItem("Save");
+        JMenuItem loadItem = new JMenuItem("Load");
+
+        // Add menuItems to menu
+        fileMenu.add(saveItem);
+        fileMenu.add(loadItem);
+
+        // add file menu to bar
         menuBar.add(fileMenu);
 
         // Set menu to frame
