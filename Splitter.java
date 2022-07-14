@@ -18,6 +18,17 @@ public class Splitter extends JFrame {
         // Create panel for buttons on top
         pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
 
+        // Create menu bar 
+        JMenuBar menuBar = new JMenuBar();
+
+        // Create file menu and add it to the bar
+        JMenu fileMenu = new JMenu("File");
+        menuBar.add(fileMenu);
+
+        // Set menu to frame
+        setJMenuBar(menuBar);
+
+
         // Add buttons to panel
         btnAdd = new JButton("Add");
         btnAdd.addActionListener(new BtnAddListener());
