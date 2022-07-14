@@ -28,6 +28,7 @@ public class Splitter extends JFrame {
         pnlButtons.add(btnDelete);
         
         btnEdit = new JButton("Edit");
+        btnEdit.addActionListener(new BtnEditListener());
         pnlButtons.add(btnEdit);
 
         // Create panel for list and add list to panel
@@ -85,10 +86,26 @@ public class Splitter extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!taskListModel.isEmpty()) {
-                if (selectedIndex != -1) {
+                if (selectedIndex != -1) { 
                     taskListModel.remove(selectedIndex);
                 }
             }
         }
     }
+
+    private class BtnEditListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
+            if (!taskListModel.isEmpty() && selectedIndex != -1) {
+                String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "Enter the new name of the task:", "Edit task", JOptionPane.PLAIN_MESSAGE);
+                if (!(taskName == null || taskName.isEmpty())) { // if taskName is not null or empty
+                    taskListModel.setElementAt(taskName, selectedIndex); 
+                }   
+            }
+        }
+
+    }
+
 }
