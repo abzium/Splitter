@@ -138,7 +138,10 @@ public class Splitter extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println("Saving...");
-            
+            // Open file chooser for saving
+            //Create a file chooser
+            final JFileChooser fc = new JFileChooser();
+            int returnVal = fc.showSaveDialog(Splitter.this);
         }
         
     }
