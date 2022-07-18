@@ -3,6 +3,8 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -137,11 +139,14 @@ public class Splitter extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Saving...");
             // Open file chooser for saving
             //Create a file chooser
             final JFileChooser fc = new JFileChooser();
             int returnVal = fc.showSaveDialog(Splitter.this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                System.out.println("Saving to " + file.getAbsolutePath());
+            }
         }
         
     }
