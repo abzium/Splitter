@@ -4,6 +4,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -136,16 +138,30 @@ public class Splitter extends JFrame {
     }
 
     private class SaveItemListener implements ActionListener {
-
+        // Listener for the 'Save' menu item
         @Override
         public void actionPerformed(ActionEvent e) {
-            // Open file chooser for saving
-            //Create a file chooser
+            // Create and open a file chooser for saving
             final JFileChooser fc = new JFileChooser();
             int returnVal = fc.showSaveDialog(Splitter.this);
+
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
-                System.out.println("Saving to " + file.getAbsolutePath());
+                try {
+                    // Get the File object from file chooser and write to it
+                    File file = fc.getSelectedFile();
+                    FileWriter writer = new FileWriter(file);
+                    
+                    // Write each task list item on a new line, in plain text
+                    for (int i = 0; i < taskListModel.getSize(); i++) {
+                        writer.append(taskListModel.getElementAt(i) + "\n");
+                    }
+                    writer.close();
+                }
+                catch (IOException exception) {
+                    System.out.println("An error occurred.");
+                    exception.printStackTrace();
+                }
+                
             }
         }
         
