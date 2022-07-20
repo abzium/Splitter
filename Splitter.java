@@ -182,6 +182,7 @@ public class Splitter extends JFrame {
                     Scanner fileScan = new Scanner(file);
                     taskListModel.clear();
                     while (fileScan.hasNextLine()) {
+                        // line by line, add each line to the list
                         taskListModel.addElement(fileScan.nextLine());
                     }
                     fileScan.close();
@@ -191,8 +192,7 @@ public class Splitter extends JFrame {
                     exception.printStackTrace();
                 }
             }
-            // TODO: Might need a standard file format, as something unexpected
-            // happen if a non-text file is opened.
+            
         }
         
     }
