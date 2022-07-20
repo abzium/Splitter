@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -168,11 +169,28 @@ public class Splitter extends JFrame {
     }
 
     private class OpenItemListener implements ActionListener {
-
+        // Listener for the 'Open' menu item
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Opening...");
-            
+            // Create and open a standard file chooser
+            final JFileChooser fc = new JFileChooser();
+            int returnVal = fc.showOpenDialog(Splitter.this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                try {
+                    File file = fc.getSelectedFile();
+                    Scanner fileScan = new Scanner(file);
+                    while (fileScan.hasNextLine()) {
+                        taskListModel.addElement(fileScan.nextLine());
+                    }
+                }
+                catch (Exception exception) {
+                    System.out.println("An error occurred.");
+                    exception.printStackTrace();
+                }
+            }
+            // TODO: Might need a standard file format, as something unexpected
+            // happen if a non-text file is opened.
         }
         
     }
