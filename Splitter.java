@@ -180,9 +180,11 @@ public class Splitter extends JFrame {
                 try {
                     File file = fc.getSelectedFile();
                     Scanner fileScan = new Scanner(file);
+                    taskListModel.clear();
                     while (fileScan.hasNextLine()) {
                         taskListModel.addElement(fileScan.nextLine());
                     }
+                    fileScan.close();
                 }
                 catch (Exception exception) {
                     System.out.println("An error occurred.");
