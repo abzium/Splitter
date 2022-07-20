@@ -3,6 +3,11 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -17,6 +22,31 @@ public class Splitter extends JFrame {
     public Splitter() {
         // Create panel for buttons on top
         pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
+
+        // Create menu bar 
+        JMenuBar menuBar = new JMenuBar();
+
+        // Create file menu
+        JMenu fileMenu = new JMenu("File");
+
+        // Create 'save' and 'open' menu items
+        JMenuItem saveItem = new JMenuItem("Save");
+        JMenuItem openItem = new JMenuItem("Open");
+
+        // Add action listeners
+        saveItem.addActionListener(new SaveItemListener());
+        openItem.addActionListener(new OpenItemListener());
+
+        // Add menuItems to menu
+        fileMenu.add(saveItem);
+        fileMenu.add(openItem);
+
+        // add file menu to bar
+        menuBar.add(fileMenu);
+
+        // Set menu to frame
+        setJMenuBar(menuBar);
+
 
         // Add buttons to panel
         btnAdd = new JButton("Add");
@@ -108,4 +138,62 @@ public class Splitter extends JFrame {
 
     }
 
+    private class SaveItemListener implements ActionListener {
+        // Listener for the 'Save' menu item
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Create and open a file chooser for saving
+            final JFileChooser fc = new JFileChooser();
+            int returnVal = fc.showSaveDialog(Splitter.this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                try {
+                    // Get the File object from file chooser and write to it
+                    File file = fc.getSelectedFile();
+                    FileWriter writer = new FileWriter(file);
+                    
+                    // Write each task list item on a new line, in plain text
+                    for (int i = 0; i < taskListModel.getSize(); i++) {
+                        writer.append(taskListModel.getElementAt(i) + "\n");
+                    }
+                    writer.close();
+                }
+                catch (IOException exception) {
+                    System.out.println("An error occurred.");
+                    exception.printStackTrace();
+                }
+                
+            }
+        }
+        
+    }
+
+    private class OpenItemListener implements ActionListener {
+        // Listener for the 'Open' menu item
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Create and open a standard file chooser
+            final JFileChooser fc = new JFileChooser();
+            int returnVal = fc.showOpenDialog(Splitter.this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                try {
+                    File file = fc.getSelectedFile();
+                    Scanner fileScan = new Scanner(file);
+                    taskListModel.clear();
+                    while (fileScan.hasNextLine()) {
+                        // line by line, add each line to the list
+                        taskListModel.addElement(fileScan.nextLine());
+                    }
+                    fileScan.close();
+                }
+                catch (Exception exception) {
+                    System.out.println("An error occurred.");
+                    exception.printStackTrace();
+                }
+            }
+            
+        }
+        
+    }
 }
