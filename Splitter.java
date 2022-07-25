@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.*;
+import javax.swing.tree.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -18,8 +19,13 @@ public class Splitter extends JFrame {
     private int selectedIndex;
     private DefaultListModel<String> taskListModel;
     private JPanel pnlButtons, pnlList;
+    private JTree taskTree;
 
     public Splitter() {
+        DefaultMutableTreeNode top = new DefaultMutableTreeNode("The Whole List");
+        createNodes(top);
+        taskTree = new JTree(top);
+
         // Create panel for buttons on top
         pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
 
@@ -75,7 +81,8 @@ public class Splitter extends JFrame {
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout(3, 3));
         cp.add(pnlButtons, BorderLayout.NORTH);
-        cp.add(pnlList, BorderLayout.CENTER);
+        //cp.add(pnlList, BorderLayout.CENTER);
+        cp.add(taskTree, BorderLayout.CENTER);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Splitter");
@@ -195,5 +202,16 @@ public class Splitter extends JFrame {
             
         }
         
+    }
+
+    private void createNodes(DefaultMutableTreeNode top) {
+        DefaultMutableTreeNode category = null;
+        DefaultMutableTreeNode item = null;
+
+        category = new DefaultMutableTreeNode("Biggest task 1");
+        top.add(category);
+
+        item = new DefaultMutableTreeNode("subtask 1");
+        category.add(item);
     }
 }
