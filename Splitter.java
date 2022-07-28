@@ -13,6 +13,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class Splitter extends JFrame {
+    // Menu components
+    private JMenuBar menuBar;
+    private JMenu fileMenu;
+    private JMenuItem saveItem, openItem;
+
     private JButton btnAdd, btnDelete, btnEdit;
     private JList<String> taskList;
     private int selectedIndex;
@@ -22,31 +27,11 @@ public class Splitter extends JFrame {
     public Splitter() {
         // Create panel for buttons on top
         pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
-
-        // Create menu bar 
-        JMenuBar menuBar = new JMenuBar();
-
+        //TODO: organize menu bar functions under one method
+        
         // Create file menu
-        JMenu fileMenu = new JMenu("File");
-
-        // Create 'save' and 'open' menu items
-        JMenuItem saveItem = new JMenuItem("Save");
-        JMenuItem openItem = new JMenuItem("Open");
-
-        // Add action listeners
-        saveItem.addActionListener(new SaveItemListener());
-        openItem.addActionListener(new OpenItemListener());
-
-        // Add menuItems to menu
-        fileMenu.add(saveItem);
-        fileMenu.add(openItem);
-
-        // add file menu to bar
-        menuBar.add(fileMenu);
-
-        // Set menu to frame
+        menuBar = createMenu();
         setJMenuBar(menuBar);
-
 
         // Add buttons to panel
         btnAdd = new JButton("Add");
@@ -195,5 +180,24 @@ public class Splitter extends JFrame {
             
         }
         
+    }
+
+    private JMenuBar createMenu() {
+        // Create menu bar 
+        JMenuBar menu = new JMenuBar();
+
+        fileMenu = new JMenu("File");
+
+        saveItem = new JMenuItem("Save");
+        saveItem.addActionListener(new SaveItemListener());
+        fileMenu.add(saveItem);
+
+        openItem = new JMenuItem("Open");
+        openItem.addActionListener(new OpenItemListener());
+        fileMenu.add(openItem);
+
+        menu.add(fileMenu);
+        
+        return menu;
     }
 }
