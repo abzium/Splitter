@@ -18,10 +18,15 @@ public class Splitter extends JFrame {
     private JMenu fileMenu;
     private JMenuItem saveItem, openItem;
 
+    // Buttons
     private JButton btnAdd, btnDelete, btnEdit;
+
+    // List variables
     private JList<String> taskList;
     private int selectedIndex;
     private DefaultListModel<String> taskListModel;
+
+    // Main panels
     private JPanel pnlButtons, pnlList;
 
     public Splitter() {
