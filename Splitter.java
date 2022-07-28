@@ -25,26 +25,15 @@ public class Splitter extends JFrame {
     private JPanel pnlButtons, pnlList;
 
     public Splitter() {
-        // Create panel for buttons on top
-        pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
-        //TODO: organize menu bar functions under one method
-        
         // Create file menu
         menuBar = createMenu();
         setJMenuBar(menuBar);
 
-        // Add buttons to panel
-        btnAdd = new JButton("Add");
-        btnAdd.addActionListener(new BtnAddListener());
-        pnlButtons.add(btnAdd);
-
-        btnDelete = new JButton("Delete");
-        btnDelete.addActionListener(new BtnDeleteListener());
-        pnlButtons.add(btnDelete);
+        // Create panel for buttons on top
+        pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
         
-        btnEdit = new JButton("Edit");
-        btnEdit.addActionListener(new BtnEditListener());
-        pnlButtons.add(btnEdit);
+        // Add buttons to panel
+        addButtons();
 
         // Create panel for list and add list to panel
         taskListModel = new DefaultListModel<>();
@@ -197,7 +186,24 @@ public class Splitter extends JFrame {
         fileMenu.add(openItem);
 
         menu.add(fileMenu);
-        
+
         return menu;
     }
+
+    private void addButtons() {
+        // Create and add buttons to panel
+        btnAdd = new JButton("Add");
+        btnAdd.addActionListener(new BtnAddListener());
+        pnlButtons.add(btnAdd);
+
+        btnDelete = new JButton("Delete");
+        btnDelete.addActionListener(new BtnDeleteListener());
+        pnlButtons.add(btnDelete);
+        
+        btnEdit = new JButton("Edit");
+        btnEdit.addActionListener(new BtnEditListener());
+        pnlButtons.add(btnEdit);
+    }
+
+    
 }
