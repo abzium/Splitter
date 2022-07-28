@@ -29,21 +29,8 @@ public class Splitter extends JFrame {
         menuBar = createMenu();
         setJMenuBar(menuBar);
 
-        // Create panel for buttons on top
-        pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
-        
-        // Add buttons to panel
-        addButtons();
-
-        // Create panel for list and add list to panel
-        taskListModel = new DefaultListModel<>();
-
-        taskList = new JList<>(taskListModel);
-        selectedIndex = -1;
-        taskList.addListSelectionListener(new TaskListListener());
-
-        pnlList = new JPanel(new GridLayout());
-        pnlList.add(taskList);
+        createButtons();
+        createList();
 
         // add panels to content pane
         Container cp = getContentPane();
@@ -190,7 +177,10 @@ public class Splitter extends JFrame {
         return menu;
     }
 
-    private void addButtons() {
+    private void createButtons() {
+        // Create button panel
+        pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
+
         // Create and add buttons to panel
         btnAdd = new JButton("Add");
         btnAdd.addActionListener(new BtnAddListener());
@@ -205,5 +195,14 @@ public class Splitter extends JFrame {
         pnlButtons.add(btnEdit);
     }
 
-    
+    private void createList() {
+        taskListModel = new DefaultListModel<>();
+
+        taskList = new JList<>(taskListModel);
+        selectedIndex = -1;
+        taskList.addListSelectionListener(new TaskListListener());
+
+        pnlList = new JPanel(new GridLayout());
+        pnlList.add(taskList);
+    }
 }
