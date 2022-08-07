@@ -30,6 +30,7 @@ public class Splitter extends JFrame {
     // Tree variables
     private JTree taskTree;
     private DefaultTreeModel treeModel;
+    DefaultMutableTreeNode top;
 
     // Main panels
     private JPanel pnlButtons, pnlList;
@@ -41,9 +42,10 @@ public class Splitter extends JFrame {
 
         createButtons();
 
-        DefaultMutableTreeNode top = new DefaultMutableTreeNode("Task List");
+        top = new DefaultMutableTreeNode("Task List");
         treeModel = new DefaultTreeModel(top);
         taskTree = new JTree(top);
+        taskTree.setEditable(true);
 
         createList();
 
@@ -82,7 +84,13 @@ public class Splitter extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "Enter the name of the task:", "Add task", JOptionPane.PLAIN_MESSAGE);
-            taskListModel.addElement(taskName);
+            DefaultMutableTreeNode newTask = new DefaultMutableTreeNode(taskName);
+            
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode)treeModel.getRoot();
+            DefaultTreeModel model = (DefaultTreeModel)taskTree.getModel();
+
+            model.insertNodeInto(newTask, root, root.getChildCount());
+            taskTree.scrollPathToVisible(new TreePath(newTask.getPath()));
         }
 
     }
