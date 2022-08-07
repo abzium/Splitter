@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.*;
+import javax.swing.tree.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -26,6 +27,10 @@ public class Splitter extends JFrame {
     private int selectedIndex;
     private DefaultListModel<String> taskListModel;
 
+    // Tree variables
+    private JTree taskTree;
+    private DefaultTreeModel treeModel;
+
     // Main panels
     private JPanel pnlButtons, pnlList;
 
@@ -35,13 +40,18 @@ public class Splitter extends JFrame {
         setJMenuBar(menuBar);
 
         createButtons();
+
+        DefaultMutableTreeNode top = new DefaultMutableTreeNode("Task List");
+        treeModel = new DefaultTreeModel(top);
+        taskTree = new JTree(top);
+
         createList();
 
         // add panels to content pane
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout(3, 3));
         cp.add(pnlButtons, BorderLayout.NORTH);
-        cp.add(pnlList, BorderLayout.CENTER);
+        cp.add(taskTree, BorderLayout.CENTER);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Splitter");
