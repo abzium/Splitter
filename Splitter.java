@@ -12,6 +12,8 @@ import javax.swing.*;
 import javax.swing.tree.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 
 public class Splitter extends JFrame {
     // Menu components
@@ -29,8 +31,9 @@ public class Splitter extends JFrame {
 
     // Tree variables
     private JTree taskTree;
-    private DefaultTreeModel treeModel;
+    //private DefaultTreeModel treeModel;
     DefaultMutableTreeNode top;
+    DefaultMutableTreeNode selectedNode;
 
     // Main panels
     private JPanel pnlButtons, pnlList;
@@ -43,9 +46,12 @@ public class Splitter extends JFrame {
         createButtons();
 
         top = new DefaultMutableTreeNode("Task List");
-        treeModel = new DefaultTreeModel(top);
+        //treeModel = new DefaultTreeModel(top);
         taskTree = new JTree(top);
         taskTree.setEditable(true);
+        taskTree.getSelectionModel().setSelectionMode
+                (TreeSelectionModel.SINGLE_TREE_SELECTION);
+        taskTree.addTreeSelectionListener(new TaskTreeListener());
 
         createList();
 
@@ -79,6 +85,17 @@ public class Splitter extends JFrame {
         }
     }
 
+    private class TaskTreeListener implements TreeSelectionListener {
+
+        @Override
+        public void valueChanged(TreeSelectionEvent e) {
+            selectedNode = (DefaultMutableTreeNode)
+                    taskTree.getLastSelectedPathComponent();
+            System.out.println(selectedNode);
+        }
+        
+    }
+
     private class BtnAddListener implements ActionListener {
 
         @Override
@@ -86,7 +103,7 @@ public class Splitter extends JFrame {
             String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "Enter the name of the task:", "Add task", JOptionPane.PLAIN_MESSAGE);
             DefaultMutableTreeNode newTask = new DefaultMutableTreeNode(taskName);
             
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode)treeModel.getRoot();
+            DefaultMutableTreeNode root = selectedNode;
             DefaultTreeModel model = (DefaultTreeModel)taskTree.getModel();
 
             model.insertNodeInto(newTask, root, root.getChildCount());
