@@ -9,80 +9,39 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.*;
-import javax.swing.tree.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class Splitter extends JFrame {
+    // Menu components
+    private JMenuBar menuBar;
+    private JMenu fileMenu;
+    private JMenuItem saveItem, openItem;
+
+    // Buttons
     private JButton btnAdd, btnDelete, btnEdit;
+
+    // List variables
     private JList<String> taskList;
     private int selectedIndex;
     private DefaultListModel<String> taskListModel;
+
+    // Main panels
     private JPanel pnlButtons, pnlList;
-    private JTree taskTree;
 
     public Splitter() {
-        DefaultMutableTreeNode top = new DefaultMutableTreeNode("The Whole List");
-        createNodes(top);
-        taskTree = new JTree(top);
-
-        // Create panel for buttons on top
-        pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
-
-        // Create menu bar 
-        JMenuBar menuBar = new JMenuBar();
-
         // Create file menu
-        JMenu fileMenu = new JMenu("File");
-
-        // Create 'save' and 'open' menu items
-        JMenuItem saveItem = new JMenuItem("Save");
-        JMenuItem openItem = new JMenuItem("Open");
-
-        // Add action listeners
-        saveItem.addActionListener(new SaveItemListener());
-        openItem.addActionListener(new OpenItemListener());
-
-        // Add menuItems to menu
-        fileMenu.add(saveItem);
-        fileMenu.add(openItem);
-
-        // add file menu to bar
-        menuBar.add(fileMenu);
-
-        // Set menu to frame
+        menuBar = createMenu();
         setJMenuBar(menuBar);
 
-
-        // Add buttons to panel
-        btnAdd = new JButton("Add");
-        btnAdd.addActionListener(new BtnAddListener());
-        pnlButtons.add(btnAdd);
-
-        btnDelete = new JButton("Delete");
-        btnDelete.addActionListener(new BtnDeleteListener());
-        pnlButtons.add(btnDelete);
-        
-        btnEdit = new JButton("Edit");
-        btnEdit.addActionListener(new BtnEditListener());
-        pnlButtons.add(btnEdit);
-
-        // Create panel for list and add list to panel
-        taskListModel = new DefaultListModel<>();
-
-        taskList = new JList<>(taskListModel);
-        selectedIndex = -1;
-        taskList.addListSelectionListener(new TaskListListener());
-
-        pnlList = new JPanel(new GridLayout());
-        pnlList.add(taskList);
+        createButtons();
+        createList();
 
         // add panels to content pane
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout(3, 3));
         cp.add(pnlButtons, BorderLayout.NORTH);
-        //cp.add(pnlList, BorderLayout.CENTER);
-        cp.add(taskTree, BorderLayout.CENTER);
+        cp.add(pnlList, BorderLayout.CENTER);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Splitter");
@@ -204,14 +163,51 @@ public class Splitter extends JFrame {
         
     }
 
-    private void createNodes(DefaultMutableTreeNode top) {
-        DefaultMutableTreeNode category = null;
-        DefaultMutableTreeNode item = null;
+    private JMenuBar createMenu() {
+        // Create menu bar 
+        JMenuBar menu = new JMenuBar();
 
-        category = new DefaultMutableTreeNode("Biggest task 1");
-        top.add(category);
+        fileMenu = new JMenu("File");
 
-        item = new DefaultMutableTreeNode("subtask 1");
-        category.add(item);
+        saveItem = new JMenuItem("Save");
+        saveItem.addActionListener(new SaveItemListener());
+        fileMenu.add(saveItem);
+
+        openItem = new JMenuItem("Open");
+        openItem.addActionListener(new OpenItemListener());
+        fileMenu.add(openItem);
+
+        menu.add(fileMenu);
+
+        return menu;
+    }
+
+    private void createButtons() {
+        // Create button panel
+        pnlButtons = new JPanel(new GridLayout(1, 3, 5, 1));
+
+        // Create and add buttons to panel
+        btnAdd = new JButton("Add");
+        btnAdd.addActionListener(new BtnAddListener());
+        pnlButtons.add(btnAdd);
+
+        btnDelete = new JButton("Delete");
+        btnDelete.addActionListener(new BtnDeleteListener());
+        pnlButtons.add(btnDelete);
+        
+        btnEdit = new JButton("Edit");
+        btnEdit.addActionListener(new BtnEditListener());
+        pnlButtons.add(btnEdit);
+    }
+
+    private void createList() {
+        taskListModel = new DefaultListModel<>();
+
+        taskList = new JList<>(taskListModel);
+        selectedIndex = -1;
+        taskList.addListSelectionListener(new TaskListListener());
+
+        pnlList = new JPanel(new GridLayout());
+        pnlList.add(taskList);
     }
 }
