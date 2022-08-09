@@ -32,8 +32,8 @@ public class Splitter extends JFrame {
     // Tree variables
     private JTree taskTree;
     //private DefaultTreeModel treeModel;
-    DefaultMutableTreeNode top;
-    DefaultMutableTreeNode selectedNode;
+    private DefaultMutableTreeNode top;
+    private DefaultMutableTreeNode selectedNode = null;
 
     // Main panels
     private JPanel pnlButtons, pnlList;
@@ -116,10 +116,13 @@ public class Splitter extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!taskListModel.isEmpty()) {
-                if (selectedIndex != -1) { 
-                    taskListModel.remove(selectedIndex);
+            DefaultTreeModel model = (DefaultTreeModel)taskTree.getModel();
+            // If the root node of the tree is a leaf, the tree is empty
+            if (!model.isLeaf(top)) {
+                if (!(selectedNode == null)) {
+                    model.removeNodeFromParent(selectedNode);
                 }
+                
             }
         }
     }
