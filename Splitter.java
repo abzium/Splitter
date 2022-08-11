@@ -9,8 +9,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.tree.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 
 public class Splitter extends JFrame {
     // Menu components
@@ -19,15 +20,19 @@ public class Splitter extends JFrame {
     private JMenuItem saveItem, openItem;
 
     // Buttons
-    private JButton btnAdd, btnDelete, btnEdit;
+    private JButton btnAdd, btnDelete;
 
     // List variables
-    private JList<String> taskList;
-    private int selectedIndex;
     private DefaultListModel<String> taskListModel;
 
+    // Tree variables
+    private JTree taskTree;
+    //private DefaultTreeModel treeModel;
+    private DefaultMutableTreeNode top;
+    private DefaultMutableTreeNode selectedNode = null;
+
     // Main panels
-    private JPanel pnlButtons, pnlList;
+    private JPanel pnlButtons;
 
     public Splitter() {
         // Create file menu
@@ -35,13 +40,20 @@ public class Splitter extends JFrame {
         setJMenuBar(menuBar);
 
         createButtons();
-        createList();
+
+        top = new DefaultMutableTreeNode("Task List");
+        //treeModel = new DefaultTreeModel(top);
+        taskTree = new JTree(top);
+        taskTree.setEditable(true);
+        taskTree.getSelectionModel().setSelectionMode
+                (TreeSelectionModel.SINGLE_TREE_SELECTION);
+        taskTree.addTreeSelectionListener(new TaskTreeListener());
 
         // add panels to content pane
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout(3, 3));
         cp.add(pnlButtons, BorderLayout.NORTH);
-        cp.add(pnlList, BorderLayout.CENTER);
+        cp.add(taskTree, BorderLayout.CENTER);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Splitter");
@@ -58,13 +70,15 @@ public class Splitter extends JFrame {
         });
     }
 
-    private class TaskListListener implements ListSelectionListener {
-        // Handler for when a list item is clicked/selected
+    private class TaskTreeListener implements TreeSelectionListener {
+
         @Override
-        public void valueChanged(ListSelectionEvent e) {
-            // Called back twice when a list element is selected
-            selectedIndex = taskList.getSelectedIndex();
+        public void valueChanged(TreeSelectionEvent e) {
+            selectedNode = (DefaultMutableTreeNode)
+                    taskTree.getLastSelectedPathComponent();
+            System.out.println(selectedNode);
         }
+        
     }
 
     private class BtnAddListener implements ActionListener {
@@ -72,7 +86,13 @@ public class Splitter extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "Enter the name of the task:", "Add task", JOptionPane.PLAIN_MESSAGE);
-            taskListModel.addElement(taskName);
+            DefaultMutableTreeNode newTask = new DefaultMutableTreeNode(taskName);
+            
+            DefaultMutableTreeNode root = selectedNode;
+            DefaultTreeModel model = (DefaultTreeModel)taskTree.getModel();
+
+            model.insertNodeInto(newTask, root, root.getChildCount());
+            taskTree.scrollPathToVisible(new TreePath(newTask.getPath()));
         }
 
     }
@@ -81,27 +101,15 @@ public class Splitter extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!taskListModel.isEmpty()) {
-                if (selectedIndex != -1) { 
-                    taskListModel.remove(selectedIndex);
+            DefaultTreeModel model = (DefaultTreeModel)taskTree.getModel();
+            // If the root node of the tree is a leaf, the tree is empty
+            if (!model.isLeaf(top)) {
+                if (!(selectedNode == null)) {
+                    model.removeNodeFromParent(selectedNode);
                 }
+                
             }
         }
-    }
-
-    private class BtnEditListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            
-            if (!taskListModel.isEmpty() && selectedIndex != -1) {
-                String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "Enter the new name of the task:", "Edit task", JOptionPane.PLAIN_MESSAGE);
-                if (!(taskName == null || taskName.isEmpty())) { // if taskName is not null or empty
-                    taskListModel.setElementAt(taskName, selectedIndex); 
-                }   
-            }
-        }
-
     }
 
     private class SaveItemListener implements ActionListener {
@@ -194,20 +202,7 @@ public class Splitter extends JFrame {
         btnDelete = new JButton("Delete");
         btnDelete.addActionListener(new BtnDeleteListener());
         pnlButtons.add(btnDelete);
-        
-        btnEdit = new JButton("Edit");
-        btnEdit.addActionListener(new BtnEditListener());
-        pnlButtons.add(btnEdit);
+
     }
 
-    private void createList() {
-        taskListModel = new DefaultListModel<>();
-
-        taskList = new JList<>(taskListModel);
-        selectedIndex = -1;
-        taskList.addListSelectionListener(new TaskListListener());
-
-        pnlList = new JPanel(new GridLayout());
-        pnlList.add(taskList);
-    }
 }
