@@ -3,9 +3,7 @@
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 import javax.swing.*;
@@ -124,13 +122,19 @@ public class Splitter extends JFrame {
                 try {
                     // Get the File object from file chooser and write to it
                     File file = fc.getSelectedFile();
-                    FileWriter writer = new FileWriter(file);
+                    FileOutputStream fileOut = new FileOutputStream(file);
+                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                    out.writeObject(taskTree);
+                    out.close();
+                    fileOut.close();
+                    System.out.println("Saved data to " + file);
+                    //FileWriter writer = new FileWriter(file);
                     
                     // Write each task list item on a new line, in plain text
-                    for (int i = 0; i < taskListModel.getSize(); i++) {
-                        writer.append(taskListModel.getElementAt(i) + "\n");
-                    }
-                    writer.close();
+                    //for (int i = 0; i < taskListModel.getSize(); i++) {
+                    //    writer.append(taskListModel.getElementAt(i) + "\n");
+                    //}
+                    //writer.close();
                 }
                 catch (IOException exception) {
                     System.out.println("An error occurred.");
