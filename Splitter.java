@@ -3,10 +3,7 @@
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
+import java.io.*;
 
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -21,9 +18,6 @@ public class Splitter extends JFrame {
 
     // Buttons
     private JButton btnAdd, btnDelete;
-
-    // List variables
-    private DefaultListModel<String> taskListModel;
 
     // Tree variables
     private JTree taskTree;
@@ -106,6 +100,7 @@ public class Splitter extends JFrame {
             if (!model.isLeaf(top)) {
                 if (!(selectedNode == null)) {
                     model.removeNodeFromParent(selectedNode);
+                    System.out.println("Deleted something...");
                 }
                 
             }
@@ -124,13 +119,19 @@ public class Splitter extends JFrame {
                 try {
                     // Get the File object from file chooser and write to it
                     File file = fc.getSelectedFile();
-                    FileWriter writer = new FileWriter(file);
+                    FileOutputStream fileOut = new FileOutputStream(file);
+                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                    out.writeObject(top);
+                    out.close();
+                    fileOut.close();
+                    System.out.println("Saved data to " + file);
+                    //FileWriter writer = new FileWriter(file);
                     
                     // Write each task list item on a new line, in plain text
-                    for (int i = 0; i < taskListModel.getSize(); i++) {
-                        writer.append(taskListModel.getElementAt(i) + "\n");
-                    }
-                    writer.close();
+                    //for (int i = 0; i < taskListModel.getSize(); i++) {
+                    //    writer.append(taskListModel.getElementAt(i) + "\n");
+                    //}
+                    //writer.close();
                 }
                 catch (IOException exception) {
                     System.out.println("An error occurred.");
@@ -153,13 +154,25 @@ public class Splitter extends JFrame {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 try {
                     File file = fc.getSelectedFile();
-                    Scanner fileScan = new Scanner(file);
-                    taskListModel.clear();
+                    FileInputStream fileIn = new FileInputStream(file);
+                    ObjectInputStream in = new ObjectInputStream(fileIn);
+                    DefaultMutableTreeNode newTop = (DefaultMutableTreeNode) in.readObject();
+                    in.close();
+                    fileIn.close();
+                    System.out.println("Loaded data from " + file);
+                    
+                    DefaultTreeModel model = (DefaultTreeModel)taskTree.getModel();
+
+                    model.setRoot(newTop);
+                    //Scanner fileScan = new Scanner(file);
+                    //taskListModel.clear();
+                    /* 
                     while (fileScan.hasNextLine()) {
                         // line by line, add each line to the list
                         taskListModel.addElement(fileScan.nextLine());
                     }
                     fileScan.close();
+                    */
                 }
                 catch (Exception exception) {
                     System.out.println("An error occurred.");
