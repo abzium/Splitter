@@ -81,8 +81,14 @@ public class Splitter extends JFrame {
         public void actionPerformed(ActionEvent e) {
             String taskName = (String)JOptionPane.showInputDialog(pnlButtons, "Enter the name of the task:", "Add task", JOptionPane.PLAIN_MESSAGE);
             DefaultMutableTreeNode newTask = new DefaultMutableTreeNode(taskName);
+            DefaultMutableTreeNode root;
+            if (selectedNode == null) {
+                root = top;
+            }
+            else {
+                root = selectedNode;
+            }
             
-            DefaultMutableTreeNode root = selectedNode;
             DefaultTreeModel model = (DefaultTreeModel)taskTree.getModel();
 
             model.insertNodeInto(newTask, root, root.getChildCount());
@@ -101,6 +107,9 @@ public class Splitter extends JFrame {
                 if (!(selectedNode == null)) {
                     model.removeNodeFromParent(selectedNode);
                     System.out.println("Deleted something...");
+                    //selectedNode = top;
+                    // an option can be implemented to return to the parent of
+                    // the deleted node
                 }
                 
             }
@@ -164,6 +173,7 @@ public class Splitter extends JFrame {
                     DefaultTreeModel model = (DefaultTreeModel)taskTree.getModel();
 
                     model.setRoot(newTop);
+                    top = newTop;
                     //Scanner fileScan = new Scanner(file);
                     //taskListModel.clear();
                     /* 
