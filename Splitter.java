@@ -124,19 +124,23 @@ public class Splitter extends JFrame {
             // Create and open a file chooser for saving
             final JFileChooser fc = new JFileChooser();
             
-            // File filter; only save with a .tre extension.
+            // File filter; only show files with a .tre extension
             fc.addChoosableFileFilter(new treFilter());
             fc.setAcceptAllFileFilterUsed(false);
 
+            // A value is returned when the save dialog is closed
             int returnVal = fc.showSaveDialog(Splitter.this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 try {
-                    // Get the File object from file chooser and write to it
+                    // Get the path from the file chooser
                     String file = fc.getSelectedFile().getAbsolutePath();
+
+                    // Append the extension if not present
                     if (!file.endsWith(".tre")) {
                         file = file + ".tre";
                     }
+                    
                     FileOutputStream fileOut = new FileOutputStream(file);
                     ObjectOutputStream out = new ObjectOutputStream(fileOut);
                     out.writeObject(top);
