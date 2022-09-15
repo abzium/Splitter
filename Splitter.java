@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.tree.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileFilter;
 
 public class Splitter extends JFrame {
     // Menu components
@@ -122,25 +123,27 @@ public class Splitter extends JFrame {
         public void actionPerformed(ActionEvent e) {
             // Create and open a file chooser for saving
             final JFileChooser fc = new JFileChooser();
+            
+            // File filter; only save with a .tre extension.
+            fc.addChoosableFileFilter(new treFilter());
+            fc.setAcceptAllFileFilterUsed(false);
+
             int returnVal = fc.showSaveDialog(Splitter.this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 try {
                     // Get the File object from file chooser and write to it
-                    File file = fc.getSelectedFile();
+                    String file = fc.getSelectedFile().getAbsolutePath();
+                    if (!file.endsWith(".tre")) {
+                        file = file + ".tre";
+                    }
                     FileOutputStream fileOut = new FileOutputStream(file);
                     ObjectOutputStream out = new ObjectOutputStream(fileOut);
                     out.writeObject(top);
                     out.close();
                     fileOut.close();
                     System.out.println("Saved data to " + file);
-                    //FileWriter writer = new FileWriter(file);
-                    
-                    // Write each task list item on a new line, in plain text
-                    //for (int i = 0; i < taskListModel.getSize(); i++) {
-                    //    writer.append(taskListModel.getElementAt(i) + "\n");
-                    //}
-                    //writer.close();
+
                 }
                 catch (IOException exception) {
                     System.out.println("An error occurred.");
@@ -158,6 +161,11 @@ public class Splitter extends JFrame {
         public void actionPerformed(ActionEvent e) {
             // Create and open a standard file chooser
             final JFileChooser fc = new JFileChooser();
+
+            // Add the file filter
+            fc.addChoosableFileFilter(new treFilter());
+            fc.setAcceptAllFileFilterUsed(false);
+            
             int returnVal = fc.showOpenDialog(Splitter.this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -190,6 +198,26 @@ public class Splitter extends JFrame {
                 }
             }
             
+        }
+        
+    }
+
+    private class treFilter extends FileFilter {
+
+        @Override
+        public boolean accept(File f) {
+            // Accept directories and .tre file types
+            if (f.isDirectory()) {
+                return true;
+            }
+
+            return f.getName().endsWith(".tre");
+        }
+
+        @Override
+        public String getDescription() {
+            // Return the description of the filter
+            return "Splitter task trees (*.tre)";
         }
         
     }
