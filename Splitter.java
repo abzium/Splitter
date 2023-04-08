@@ -29,6 +29,8 @@ public class Splitter extends JFrame {
     // Main panels
     private JPanel pnlButtons;
 
+    private String fileExt = ".tre";
+
     public Splitter() {
         // Create file menu
         menuBar = createMenu();
@@ -137,8 +139,8 @@ public class Splitter extends JFrame {
                     String file = fc.getSelectedFile().getAbsolutePath();
 
                     // Append the extension if not present
-                    if (!file.endsWith(".tre")) {
-                        file = file + ".tre";
+                    if (!file.endsWith(fileExt)) {
+                        file = file + fileExt;
                     }
                     
                     FileOutputStream fileOut = new FileOutputStream(file);
@@ -186,15 +188,7 @@ public class Splitter extends JFrame {
 
                     model.setRoot(newTop);
                     top = newTop;
-                    //Scanner fileScan = new Scanner(file);
-                    //taskListModel.clear();
-                    /* 
-                    while (fileScan.hasNextLine()) {
-                        // line by line, add each line to the list
-                        taskListModel.addElement(fileScan.nextLine());
-                    }
-                    fileScan.close();
-                    */
+
                 }
                 catch (Exception exception) {
                     System.out.println("An error occurred.");
@@ -215,13 +209,13 @@ public class Splitter extends JFrame {
                 return true;
             }
 
-            return f.getName().endsWith(".tre");
+            return f.getName().endsWith(fileExt);
         }
 
         @Override
         public String getDescription() {
             // Return the description of the filter
-            return "Splitter task trees (*.tre)";
+            return "Splitter task trees (*" + fileExt + ")";
         }
         
     }
